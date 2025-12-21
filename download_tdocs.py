@@ -19,9 +19,10 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 
 
 BASE_URL = "https://www.3gpp.org/ftp/meetings_3gpp_sync/RAN1/Docs/"
-DOWNLOAD_DIR = "tdocs"
-EXTRACT_DIR = "extracted"
-OUTPUT_DIR = "output"
+ARTIFACTS_DIR = "artifacts"
+DOWNLOAD_DIR = "artifacts/tdocs"
+EXTRACT_DIR = "artifacts/extracted"
+OUTPUT_DIR = "artifacts/output"
 CHUNK_SIZE = 8192  # 8KB chunks for download
 MAX_WORKERS = 4  # Number of parallel workers
 

@@ -78,10 +78,12 @@ Build a full-stack web application to manage 3GPP TDoc files with download, extr
 │   ├── vite.config.js
 │   └── Dockerfile
 ├── docker-compose.yml
-└── data/                            # Mounted volume
+└── artifacts/                       # Mounted volume for all generated data
     ├── tdocs/
     ├── extracted/
     ├── output/
+    │   ├── html/
+    │   └── markdown/
     └── db/
 ```
 

@@ -1,7 +1,5 @@
-# Artifacts
-tdocs/
-extracted/
-output/
+# Artifacts - Data directories with large binary files
+artifacts/
 
 # macOS
 .DS_Store

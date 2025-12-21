@@ -20,7 +20,7 @@ The script will:
 1. Download all TDoc ZIP files from the 3GPP server
 2. Extract each ZIP archive
 3. Convert documents (PDF, Word, PowerPoint, Excel) to HTML and Markdown
-4. Save all converted files in the `output/` directory
+4. Save all files in the `artifacts/` directory
 
 ## Features
 
@@ -36,11 +36,14 @@ The script will:
 
 ```
 .
-├── tdocs/              # Downloaded ZIP files
-├── extracted/          # Extracted document contents
-└── output/
-    ├── html/           # Converted HTML files
-    └── markdown/       # Converted Markdown files
+├── download_tdocs.py   # Main script
+├── requirements.txt    # Python dependencies
+└── artifacts/          # All generated files (git-ignored)
+    ├── tdocs/          # Downloaded ZIP files
+    ├── extracted/      # Extracted document contents
+    └── output/
+        ├── html/       # Converted HTML files
+        └── markdown/   # Converted Markdown files
 ```
 
 ## Output Files

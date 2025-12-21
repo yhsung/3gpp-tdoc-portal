@@ -13,11 +13,12 @@ A comprehensive system for downloading, extracting, and converting 3GPP TDoc fil
 ├── FOLDER_SUMMARY.md         # This file - comprehensive folder overview
 ├── specs/                     # Specification documents
 │   └── web-app-implementation-plan.md  # Web application design plan
-├── tdocs/                     # Downloaded TDoc ZIP files (git-ignored)
-├── extracted/                 # Extracted document contents (git-ignored)
-└── output/                    # Converted files (git-ignored)
-    ├── html/                  # HTML converted documents
-    └── markdown/              # Markdown converted documents
+└── artifacts/                 # All generated files (git-ignored)
+    ├── tdocs/                 # Downloaded TDoc ZIP files
+    ├── extracted/             # Extracted document contents
+    └── output/                # Converted files
+        ├── html/              # HTML converted documents
+        └── markdown/          # Markdown converted documents
 ```
 
 ## Core Files
@@ -43,9 +44,10 @@ A comprehensive system for downloading, extracting, and converting 3GPP TDoc fil
 **Configuration:**
 - `BASE_URL` - 3GPP RAN1 documents directory
 - `MAX_WORKERS` - Parallel processing workers (default: 4)
-- `DOWNLOAD_DIR` - TDoc ZIP storage (default: "tdocs")
-- `EXTRACT_DIR` - Extracted files location (default: "extracted")
-- `OUTPUT_DIR` - Converted files location (default: "output")
+- `ARTIFACTS_DIR` - Base directory for all generated files (default: "artifacts")
+- `DOWNLOAD_DIR` - TDoc ZIP storage (default: "artifacts/tdocs")
+- `EXTRACT_DIR` - Extracted files location (default: "artifacts/extracted")
+- `OUTPUT_DIR` - Converted files location (default: "artifacts/output")
 
 ### `requirements.txt`
 **Dependencies:**
@@ -87,29 +89,31 @@ Comprehensive project documentation including:
 - `processing_tasks` - Task execution tracking
 - `task_logs` - Detailed task logs
 
-## Data Directories (Git-Ignored)
+## Artifacts Directory (Git-Ignored)
 
-### `tdocs/`
+The `artifacts/` directory contains all generated files and is excluded from version control.
+
+### `artifacts/tdocs/`
 Contains downloaded TDoc ZIP files from 3GPP server.
 - Files follow pattern: `R1-XXXXXXX.zip`
 - Currently ~630+ files available
 - Automatically skipped if already downloaded
 
-### `extracted/`
+### `artifacts/extracted/`
 Contains extracted contents of TDoc ZIP files.
-- Organized by TDoc ID: `extracted/R1-XXXXXXX/`
+- Organized by TDoc ID: `artifacts/extracted/R1-XXXXXXX/`
 - Preserves original directory structure
 - May contain multiple document formats
 
-### `output/`
+### `artifacts/output/`
 Contains converted documents in two formats:
 
-**`output/html/`**
+**`artifacts/output/html/`**
 - HTML versions with preserved layout
 - Naming pattern: `{TDoc-ID}_{filename}.html`
 - Example: `R1-2508300_proposal.html`
 
-**`output/markdown/`**
+**`artifacts/output/markdown/`**
 - Markdown versions for text processing
 - Naming pattern: `{TDoc-ID}_{filename}.md`
 - Example: `R1-2508300_proposal.md`
@@ -206,9 +210,10 @@ Based on the web application implementation plan:
 
 ### Ignored Files/Directories
 The following are git-ignored to avoid committing large binary files:
-- `tdocs/` - Downloaded ZIP files
-- `extracted/` - Extracted document contents
-- `output/` - Converted HTML and Markdown files
+- `artifacts/` - All generated files (downloads, extractions, conversions)
+  - `artifacts/tdocs/` - Downloaded ZIP files
+  - `artifacts/extracted/` - Extracted document contents
+  - `artifacts/output/` - Converted HTML and Markdown files
 - `.vscode/` - Editor configuration
 - `.claude/` - AI assistant workspace
 - `__pycache__/` - Python bytecode
