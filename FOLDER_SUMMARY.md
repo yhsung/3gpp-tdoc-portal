@@ -1,5 +1,7 @@
 # 3GPP TDoc Portal - Folder Summary
 
+> 📚 **For detailed documentation, see the [docs/](docs/README.md) directory** with comprehensive guides organized by topic.
+
 ## Project Overview
 A comprehensive system for downloading, extracting, and converting 3GPP TDoc files from RAN1 meeting documents, with plans for a full-stack web application interface.
 
@@ -11,6 +13,12 @@ A comprehensive system for downloading, extracting, and converting 3GPP TDoc fil
 ├── requirements.txt           # Python dependencies
 ├── README.md                  # Project documentation
 ├── FOLDER_SUMMARY.md         # This file - comprehensive folder overview
+├── docs/                      # Comprehensive documentation (see docs/README.md)
+│   ├── architecture/          # System design and structure
+│   ├── development/           # Developer guides and references
+│   ├── features/              # Detailed feature documentation
+│   ├── usage/                 # User guides and tutorials
+│   └── planning/              # Future enhancements and roadmap
 ├── specs/                     # Specification documents
 │   └── web-app-implementation-plan.md  # Web application design plan
 └── artifacts/                 # All generated files (git-ignored)
@@ -57,12 +65,18 @@ A comprehensive system for downloading, extracting, and converting 3GPP TDoc fil
 - `tqdm>=4.66.0` - Progress bars
 
 ### `README.md`
-Comprehensive project documentation including:
+Quick start project documentation including:
 - Installation instructions
-- Usage guide
-- Feature list
-- Directory structure explanation
-- Output file naming conventions
+- Basic usage guide
+- Feature overview
+- Links to comprehensive documentation
+
+**For detailed documentation:** See [docs/README.md](docs/README.md) for organized guides covering:
+- [Architecture](docs/architecture/) - System design and structure
+- [Development](docs/development/) - Developer guides and references
+- [Features](docs/features/) - Multi-processing, skip logic, error handling, progress tracking
+- [Usage](docs/usage/) - Quick start, running pipeline, output files
+- [Planning](docs/planning/) - Future enhancements and web app plans
 
 ## Specifications
 
