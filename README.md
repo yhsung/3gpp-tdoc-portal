@@ -2,6 +2,8 @@
 
 Python script to download all 3GPP TDoc files from RAN1 meeting documents, extract them, and convert documents to HTML and Markdown using docling.
 
+> 📋 For comprehensive project documentation, see [FOLDER_SUMMARY.md](FOLDER_SUMMARY.md)
+
 ## Installation
 
 1. Install the required dependencies:
@@ -31,32 +33,22 @@ The script will:
 - **Error handling**: Failures are logged and don't stop the process
 - **Respectful downloading**: Includes delays between requests
 - **Multiple formats**: Supports PDF, DOCX, DOC, PPTX, PPT, XLSX, XLS
+- **Multi-processing**: Parallel processing with 4 workers for faster execution
 
-## Directory Structure
+## Output
 
-```
-.
-├── download_tdocs.py   # Main script
-├── requirements.txt    # Python dependencies
-└── artifacts/          # All generated files (git-ignored)
-    ├── tdocs/          # Downloaded ZIP files
-    ├── extracted/      # Extracted document contents
-    └── output/
-        ├── html/       # Converted HTML files
-        └── markdown/   # Converted Markdown files
-```
+All files are saved in the `artifacts/` directory:
+- `artifacts/tdocs/` - Downloaded ZIP files
+- `artifacts/extracted/` - Extracted documents
+- `artifacts/output/html/` - HTML conversions
+- `artifacts/output/markdown/` - Markdown conversions
 
-## Output Files
+Converted files follow the pattern: `{TDoc-ID}_{original-filename}.{html|md}`
 
-Converted files are named with the pattern: `{TDoc-ID}_{original-filename}.{html|md}`
+## Additional Information
 
-Example:
-- `R1-2508300_proposal.html`
-- `R1-2508300_proposal.md`
-
-## Notes
-
-- Source URL: https://www.3gpp.org/ftp/meetings_3gpp_sync/RAN1/Docs/
-- Processing time varies based on document count and size
-- Docling provides high-quality conversion with layout preservation
-- Approximately 630+ TDoc files to process
+- **Source**: [3GPP RAN1 Documents](https://www.3gpp.org/ftp/meetings_3gpp_sync/RAN1/Docs/)
+- **Document Count**: ~630+ TDoc files available
+- **Conversion Engine**: [Docling](https://github.com/DS4SD/docling) for high-quality layout preservation
+- **Documentation**: See [FOLDER_SUMMARY.md](FOLDER_SUMMARY.md) for detailed project information
+- **Web Application**: See [specs/web-app-implementation-plan.md](specs/web-app-implementation-plan.md) for future development plans
