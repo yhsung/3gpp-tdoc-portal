@@ -1,0 +1,16 @@
+# Artifacts
+tdocs/
+extracted/
+output/
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDEs
+.claude/
+.vscode/
