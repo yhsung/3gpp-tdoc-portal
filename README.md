@@ -1,5 +1,8 @@
 # 3GPP TDoc Downloader, Extractor, and Converter
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+
 Python script to download all 3GPP TDoc files from RAN1 meeting documents, extract them, and convert documents to HTML and Markdown using docling.
 
 > 📋 For comprehensive project documentation, see [FOLDER_SUMMARY.md](FOLDER_SUMMARY.md)
@@ -52,3 +55,26 @@ Converted files follow the pattern: `{TDoc-ID}_{original-filename}.{html|md}`
 - **Conversion Engine**: [Docling](https://github.com/DS4SD/docling) for high-quality layout preservation
 - **Documentation**: See [FOLDER_SUMMARY.md](FOLDER_SUMMARY.md) for detailed project information
 - **Web Application**: See [specs/web-app-implementation-plan.md](specs/web-app-implementation-plan.md) for future development plans
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+### Third-Party Licenses
+
+This project uses the following third-party libraries:
+- **requests** - Apache License 2.0
+- **beautifulsoup4** - MIT License
+- **docling** - MIT License (core library)
+- **tqdm** - MPL-2.0 OR MIT License (used under MIT)
+
+All dependencies use permissive licenses compatible with Apache 2.0. See [LICENSE_COMPLIANCE.md](LICENSE_COMPLIANCE.md) for detailed license analysis and [NOTICE](NOTICE) file for attribution.
+
+## Contributing
+
+Contributions are welcome! Please see [docs/development/contributing.md](docs/development/contributing.md) for development guidelines.
+
+## Acknowledgments
+
+- 3GPP for providing access to TDoc documents
+- [Docling](https://github.com/docling-project/docling) team at IBM Research for the document conversion engine
