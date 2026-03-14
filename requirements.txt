@@ -2,3 +2,7 @@ requests>=2.31.0
 beautifulsoup4>=4.12.0
 docling>=1.0.0
 tqdm>=4.66.0
+streamlit>=1.35.0
+anthropic>=0.28.0
+openai>=1.30.0
+python-dotenv>=1.0.0
