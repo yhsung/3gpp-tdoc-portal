@@ -14,6 +14,8 @@ from portal.state import (
     SS_DOC_FILTER,
     SS_DOCS,
     SS_ERROR,
+    SS_FETCH_STATUS,
+    SS_FETCH_URL,
     SS_LOADING,
     SS_LLM_MODEL,
     SS_LLM_PROVIDER,
@@ -75,8 +77,50 @@ def render_left_column(col: st.delta_generator.DeltaGenerator) -> None:
     with col:
         st.subheader("TDocs")
 
+        # --- 3GPP Fetch controls ---
+        st.text_input("Meeting URL", key=SS_FETCH_URL, placeholder="https://www.3gpp.org/ftp/…")
+
+        fb1, fb2 = st.columns(2)
+        with fb1:
+            if st.button("Fetch TDocs", use_container_width=True):
+                from portal import fetcher
+                from portal.mock_data import get_mock_documents
+                url = st.session_state[SS_FETCH_URL]
+                fetcher._cached_fetch_tdoc_ids.clear()
+                with st.spinner("Fetching from 3GPP…"):
+                    try:
+                        docs = fetcher.get_real_documents(url)
+                        st.session_state[SS_DOCS] = docs
+                        st.session_state[SS_FETCH_STATUS] = f"Fetched {len(docs)} TDocs"
+                    except Exception as exc:  # noqa: BLE001
+                        st.session_state[SS_DOCS] = get_mock_documents()
+                        st.session_state[SS_FETCH_STATUS] = f"Fetch failed: {exc}"
+                st.rerun()
+        with fb2:
+            selected_ids_for_dl: set[str] = st.session_state[SS_SELECTED_DOC_IDS]
+            n_sel = len(selected_ids_for_dl)
+            dl_label = f"Download ({n_sel})" if n_sel else "Download"
+            if st.button(dl_label, use_container_width=True, disabled=n_sel == 0):
+                from portal import fetcher
+                base_url = st.session_state[SS_FETCH_URL]
+                with st.spinner(f"Downloading {n_sel} TDoc(s)…"):
+                    results = fetcher.download_and_convert_tdocs(list(selected_ids_for_dl), base_url)
+                ok = sum(1 for v in results.values() if "converted" in v or "skipped" in v.lower())
+                st.session_state[SS_FETCH_STATUS] = f"Download complete: {ok}/{n_sel} converted"
+                # Refresh doc list to reflect new local availability
+                try:
+                    st.session_state[SS_DOCS] = fetcher.get_real_documents(base_url)
+                except Exception:  # noqa: BLE001
+                    pass
+                st.rerun()
+
+        if st.session_state.get(SS_FETCH_STATUS):
+            st.caption(st.session_state[SS_FETCH_STATUS])
+
+        st.divider()
+
         # --- Filters ---
-        doc_filter = st.text_input(
+        st.text_input(
             "Search", value=st.session_state[SS_DOC_FILTER], key=SS_DOC_FILTER, placeholder="Search by ID or title..."
         )
 
@@ -106,7 +150,7 @@ def render_left_column(col: st.delta_generator.DeltaGenerator) -> None:
 
         selected_ids: set[str] = st.session_state[SS_SELECTED_DOC_IDS]
 
-        with st.container(height=520):
+        with st.container(height=400):
             for doc in filtered:
                 c1, c2 = st.columns([1, 6])
                 with c1:
@@ -124,7 +168,12 @@ def render_left_column(col: st.delta_generator.DeltaGenerator) -> None:
                 with c2:
                     label = f"**{doc.id}**  \n{doc.title}"
                     st.markdown(label)
-                    badge = "✅ local" if doc.available else "🔷 mock"
+                    if doc.available:
+                        badge = "✅ local"
+                    elif doc.file_type == "zip":
+                        badge = "⬇️ remote"
+                    else:
+                        badge = "🔷 mock"
                     st.caption(f"{badge} · {doc.meeting} · {doc.agenda_item}")
 
                 st.divider()
