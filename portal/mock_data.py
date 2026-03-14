@@ -19,7 +19,7 @@ class TDoc:
     file_type: str
     meeting: str
     agenda_item: str
-    mock_content: str
+    mock_content: str = ""
     available: bool = False
     html_path: str = ""
     md_path: str = ""
