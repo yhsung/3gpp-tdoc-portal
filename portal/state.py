@@ -20,6 +20,14 @@ SS_PENDING_PROMPT = "pending_prompt"
 PROVIDER_MODELS = {
     "claude": ["claude-opus-4-5", "claude-sonnet-4-5"],
     "deepseek": ["deepseek-chat", "deepseek-reasoner"],
+    "openrouter": [
+        "google/gemini-2.0-flash-001",
+        "anthropic/claude-sonnet-4-5",
+        "openai/gpt-4o",
+        "meta-llama/llama-4-maverick",
+        "deepseek/deepseek-chat-v3-0324",
+        "z-ai/glm-4.7"
+    ],
 }
 
 DEFAULT_PROVIDER = "deepseek"

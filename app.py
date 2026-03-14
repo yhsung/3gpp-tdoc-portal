@@ -30,6 +30,11 @@ if not anthropic_key and not deepseek_key:
 
 init_session_state()
 
+if "rerun_count" not in st.session_state:
+    st.session_state.rerun_count = 0
+st.session_state.rerun_count += 1
+print(f"[rerun #{st.session_state.rerun_count}]")
+
 col_left, col_mid, col_right = st.columns([2, 4, 2], gap="medium")
 
 render_left_column(col_left)
