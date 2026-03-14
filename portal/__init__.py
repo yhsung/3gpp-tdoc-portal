@@ -20,6 +20,7 @@ from portal.state import (
     SS_LLM_MODEL,
     SS_LLM_PROVIDER,
     SS_MEETING_FILTER,
+    SS_PENDING_PROMPT,
     SS_SELECTED_DOC_IDS,
     SS_SESSIONS,
 )
@@ -155,7 +156,7 @@ def render_left_column(col: st.delta_generator.DeltaGenerator) -> None:
                 c1, c2 = st.columns([1, 6])
                 with c1:
                     checked = st.checkbox(
-                        "",
+                        f"Select {doc.id}",
                         key=f"chk_{doc.id}",
                         value=doc.id in selected_ids,
                         label_visibility="collapsed",
@@ -189,23 +190,20 @@ def render_middle_column(col: st.delta_generator.DeltaGenerator) -> None:
         p1, p2 = st.columns(2)
         with p1:
             provider_options = list(PROVIDER_MODELS.keys())
-            current_provider = st.session_state[SS_LLM_PROVIDER]
-            provider_idx = provider_options.index(current_provider) if current_provider in provider_options else 0
             chosen_provider = st.selectbox(
                 "Provider",
                 options=provider_options,
-                index=provider_idx,
                 key=SS_LLM_PROVIDER,
                 format_func=lambda x: {"claude": "Claude (Anthropic)", "deepseek": "DeepSeek"}.get(x, x),
             )
         with p2:
             model_options = PROVIDER_MODELS[st.session_state[SS_LLM_PROVIDER]]
-            current_model = st.session_state[SS_LLM_MODEL]
-            model_idx = model_options.index(current_model) if current_model in model_options else 0
+            # Reset model if it doesn't belong to the selected provider
+            if st.session_state[SS_LLM_MODEL] not in model_options:
+                st.session_state[SS_LLM_MODEL] = model_options[0]
             st.selectbox(
                 "Model",
                 options=model_options,
-                index=model_idx,
                 key=SS_LLM_MODEL,
             )
 
@@ -240,8 +238,29 @@ def render_middle_column(col: st.delta_generator.DeltaGenerator) -> None:
             disabled=is_loading or n == 0,
         )
 
+        # Pick up a prompt that was deferred while downloading
+        if not prompt:
+            prompt = st.session_state.get(SS_PENDING_PROMPT)
+            if prompt:
+                st.session_state[SS_PENDING_PROMPT] = None
+
         if prompt:
-            _handle_chat_submit(prompt, sel_docs)
+            from portal import fetcher as _fetcher
+            unavailable = [d for d in sel_docs if not d.available]
+            if unavailable:
+                base_url = st.session_state[SS_FETCH_URL]
+                with st.spinner(f"Downloading {len(unavailable)} document(s)…"):
+                    _fetcher.download_and_convert_tdocs(
+                        [d.id for d in unavailable], base_url
+                    )
+                try:
+                    st.session_state[SS_DOCS] = _fetcher.get_real_documents(base_url)
+                except Exception:  # noqa: BLE001
+                    pass
+                st.session_state[SS_PENDING_PROMPT] = prompt
+                st.rerun()
+            else:
+                _handle_chat_submit(prompt, sel_docs)
 
 
 def _handle_chat_submit(prompt: str, sel_docs: list[TDoc]) -> None:

@@ -15,15 +15,24 @@ SS_LLM_PROVIDER = "llm_provider"
 SS_LLM_MODEL = "llm_model"
 SS_FETCH_URL = "fetch_url"
 SS_FETCH_STATUS = "fetch_status"
+SS_PENDING_PROMPT = "pending_prompt"
 
 PROVIDER_MODELS = {
     "claude": ["claude-opus-4-5", "claude-sonnet-4-5"],
     "deepseek": ["deepseek-chat", "deepseek-reasoner"],
+    "openrouter": [
+        "google/gemini-2.0-flash-001",
+        "anthropic/claude-sonnet-4-5",
+        "openai/gpt-4o",
+        "meta-llama/llama-4-maverick",
+        "deepseek/deepseek-chat-v3-0324",
+        "z-ai/glm-4.7"
+    ],
 }
 
-DEFAULT_PROVIDER = "claude"
-DEFAULT_MODEL = "claude-opus-4-5"
-DEFAULT_FETCH_URL = "https://www.3gpp.org/ftp/tsg_ran/WG1_RL1/TSGR1_120/Docs/"
+DEFAULT_PROVIDER = "deepseek"
+DEFAULT_MODEL = "deepseek-chat"
+DEFAULT_FETCH_URL = "https://www.3gpp.org/ftp/meetings_3gpp_sync/RAN1/Docs/"
 
 
 def init_session_state() -> None:
@@ -42,6 +51,9 @@ def init_session_state() -> None:
             fetch_status = f"Fetch failed ({exc}); showing mock data"
         st.session_state[SS_DOCS] = docs
         st.session_state[SS_FETCH_STATUS] = fetch_status
+    else:
+        # Refresh local availability and titles on every rerun (no network call).
+        fetcher.refresh_local_availability(st.session_state[SS_DOCS])
 
     defaults = {
         SS_SELECTED_DOC_IDS: set(),
@@ -56,6 +68,7 @@ def init_session_state() -> None:
         SS_LLM_MODEL: DEFAULT_MODEL,
         SS_FETCH_URL: DEFAULT_FETCH_URL,
         SS_FETCH_STATUS: "",
+        SS_PENDING_PROMPT: None,
     }
     for key, value in defaults.items():
         if key not in st.session_state:

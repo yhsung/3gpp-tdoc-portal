@@ -72,6 +72,16 @@ def stream_response(
             api_key=os.getenv("DEEPSEEK_API_KEY", ""),
             base_url="https://api.deepseek.com",
         )
+    elif provider == "openrouter":
+        yield from _stream_openai_compatible(
+            prompt=prompt,
+            context=context,
+            history=history,
+            model=model,
+            max_tokens=max_tokens,
+            api_key=os.getenv("OPENROUTER_API_KEY", ""),
+            base_url="https://openrouter.ai/api/v1",
+        )
     else:
         yield f"[Error] Unknown provider: {provider}"
 
